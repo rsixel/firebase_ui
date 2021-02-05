@@ -11,7 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-  flutter_twitter: ^1.1.3
+  flutter_twitter_login: 
+    git:
+      url: https://github.com/rsixel/flutter_twitter_login.git
 
   firebase_auth: ^0.21.0-1.1.nullsafety.1 
 
