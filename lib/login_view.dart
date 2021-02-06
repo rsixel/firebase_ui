@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:flutter_twitter/flutter_twitter.dart';
+import 'package:flutter_twitter_login/flutter_twitter_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'email_view.dart';
@@ -11,19 +11,19 @@ import 'utils.dart';
 
 class LoginView extends StatefulWidget {
   final List<ProvidersTypes> providers;
-  final bool passwordCheck;
-  final String twitterConsumerKey;
-  final String twitterConsumerSecret;
-  final double bottomPadding;
-  final bool appleSignIn;
+  final bool? passwordCheck;
+  final String? twitterConsumerKey;
+  final String? twitterConsumerSecret;
+  final double? bottomPadding;
+  final bool? appleSignIn;
 
   LoginView(
-      {Key key,
-      @required this.providers,
+      {Key? key,
+      required this.providers,
       this.passwordCheck,
       this.twitterConsumerKey,
       this.twitterConsumerSecret,
-      @required this.bottomPadding,
+      required this.bottomPadding,
       this.appleSignIn})
       : super(key: key);
 
@@ -35,13 +35,13 @@ class _LoginViewState extends State<LoginView> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Future<bool> _isAvailableFuture = Apple.AppleSignIn.isAvailable();
 
-  Map<ProvidersTypes, dynamic> _buttons;
+  Map<ProvidersTypes, dynamic>? _buttons;
 
   _handleEmailSignIn() async {
-    String value = await Navigator.of(context)
+    String value = (await Navigator.of(context)
         .push(new MaterialPageRoute<String>(builder: (BuildContext context) {
-      return new EmailView(widget.passwordCheck);
-    }));
+      return new EmailView(widget.passwordCheck!);
+    })))!;
 
     if (value != null) {
       _followProvider(value);
@@ -49,7 +49,7 @@ class _LoginViewState extends State<LoginView> {
   }
 
   _handleGoogleSignIn() async {
-    GoogleSignInAccount googleUser = await googleSignIn.signIn();
+    GoogleSignInAccount googleUser = (await googleSignIn.signIn())!;
     if (googleUser != null) {
       GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       if (googleAuth.accessToken != null) {
@@ -58,10 +58,11 @@ class _LoginViewState extends State<LoginView> {
               idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
           UserCredential authResult =
               await _auth.signInWithCredential(credential);
-          User user = authResult.user;
+          User user = authResult.user!;
           print(user);
         } catch (e) {
-          showErrorDialog(context, e.details);
+          var details;
+          showErrorDialog(context, e.toString());
         }
       }
     }
@@ -75,18 +76,18 @@ class _LoginViewState extends State<LoginView> {
             FacebookAuthProvider.credential(result.accessToken.token);
         UserCredential authResult =
             await _auth.signInWithCredential(credential);
-        User user = authResult.user;
+        User user = authResult.user!;
         print(user);
       } catch (e) {
-        showErrorDialog(context, e.details);
+        showErrorDialog(context, e.toString());
       }
     }
   }
 
   _handleTwitterSignin() async {
     var twitterLogin = new TwitterLogin(
-      consumerKey: widget.twitterConsumerKey,
-      consumerSecret: widget.twitterConsumerSecret,
+      consumerKey: widget.twitterConsumerKey!,
+      consumerSecret: widget.twitterConsumerSecret!,
     );
 
     final TwitterLoginResult result = await twitterLogin.authorize();
@@ -94,7 +95,7 @@ class _LoginViewState extends State<LoginView> {
     switch (result.status) {
       case TwitterLoginStatus.loggedIn:
         AuthCredential credential = TwitterAuthProvider.credential(
-            accessToken: result.session.token, secret: result.session.secret);
+            accessToken: result.session!.token, secret: result.session!.secret);
         await _auth.signInWithCredential(credential);
         break;
       case TwitterLoginStatus.cancelledByUser:
@@ -106,7 +107,7 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
-  Future<User> _signInWithApple({List<Apple.Scope> scopes = const []}) async {
+  Future<User?> _signInWithApple({List<Apple.Scope> scopes = const []}) async {
     // 1. perform the sign-in request
     final result = await Apple.AppleSignIn.performRequests(
         [Apple.AppleIdRequest(requestedScopes: scopes)]);
@@ -125,9 +126,9 @@ class _LoginViewState extends State<LoginView> {
         if (scopes.contains(Apple.Scope.fullName)) {
           var displayName =
               '${appleIdCredential.fullName.givenName} ${appleIdCredential.fullName.familyName}';
-          await firebaseUser.updateProfile(displayName: displayName);
+          await firebaseUser!.updateProfile(displayName: displayName);
         }
-        return firebaseUser;
+        return firebaseUser!;
       case Apple.AuthorizationStatus.error:
         print(result.error.toString());
         throw PlatformException(
@@ -150,7 +151,7 @@ class _LoginViewState extends State<LoginView> {
       ProvidersTypes.apple: FutureBuilder<bool>(
           future: _isAvailableFuture,
           builder: (context, isAvailableSnapshot) {
-            if (isAvailableSnapshot.hasData && isAvailableSnapshot.data) {
+            if (isAvailableSnapshot.hasData && isAvailableSnapshot.data!) {
               return Apple.AppleSignInButton(
                 style: Apple.ButtonStyle.white, // style as needed
                 type: Apple.ButtonType.signIn, // style as needed
@@ -162,15 +163,15 @@ class _LoginViewState extends State<LoginView> {
             }
           }),
       ProvidersTypes.facebook:
-          providersDefinitions(context)[ProvidersTypes.facebook]
+          providersDefinitions(context)[ProvidersTypes.facebook]!
               .copyWith(onSelected: _handleFacebookSignin),
       ProvidersTypes.google:
-          providersDefinitions(context)[ProvidersTypes.google]
+          providersDefinitions(context)[ProvidersTypes.google]!
               .copyWith(onSelected: _handleGoogleSignIn),
       ProvidersTypes.twitter:
-          providersDefinitions(context)[ProvidersTypes.twitter]
+          providersDefinitions(context)[ProvidersTypes.twitter]!
               .copyWith(onSelected: _handleTwitterSignin),
-      ProvidersTypes.email: providersDefinitions(context)[ProvidersTypes.email]
+      ProvidersTypes.email: providersDefinitions(context)[ProvidersTypes.email]!
           .copyWith(onSelected: _handleEmailSignIn),
     };
 
@@ -179,14 +180,14 @@ class _LoginViewState extends State<LoginView> {
         child: new Column(
       children: widget.providers.map((p) {
         return new Container(
-            padding: EdgeInsets.only(bottom: widget.bottomPadding),
-            child: _buttons[p] ?? new Container());
+            padding: EdgeInsets.only(bottom: widget.bottomPadding!),
+            child: _buttons![p] ?? new Container());
       }).toList(),
     ));
   }
 
   void _followProvider(String value) {
-    ProvidersTypes provider = stringToProvidersType(value);
+    ProvidersTypes provider = stringToProvidersType(value)!;
     if (provider == ProvidersTypes.facebook) {
       _handleFacebookSignin();
     } else if (provider == ProvidersTypes.google) {

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'translations.dart';
 
 class FFULocalizations {
-  TranslationBundle _translationBundle;
+  late TranslationBundle _translationBundle;
 
   FFULocalizations(Locale locale) {
     _translationBundle = translationBundleForLocale(locale);

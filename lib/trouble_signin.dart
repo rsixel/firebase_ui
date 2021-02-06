@@ -7,14 +7,14 @@ import 'utils.dart';
 class TroubleSignIn extends StatefulWidget {
   final String email;
 
-  TroubleSignIn(this.email, {Key key}) : super(key: key);
+  TroubleSignIn(this.email, {Key? key}) : super(key: key);
 
   @override
   _TroubleSignInState createState() => new _TroubleSignInState();
 }
 
 class _TroubleSignInState extends State<TroubleSignIn> {
-  TextEditingController _controllerEmail;
+  late TextEditingController _controllerEmail;
 
   @override
   initState() {
@@ -80,7 +80,7 @@ class _TroubleSignInState extends State<TroubleSignIn> {
       await _auth.sendPasswordResetEmail(email: _controllerEmail.text);
       Navigator.of(context).pop();
     } catch (exception) {
-      showErrorDialog(context, exception);
+      showErrorDialog(context, exception.toString());
     }
 
     showErrorDialog(context,

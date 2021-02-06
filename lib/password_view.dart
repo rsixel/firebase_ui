@@ -8,15 +8,15 @@ import 'utils.dart';
 class PasswordView extends StatefulWidget {
   final String email;
 
-  PasswordView(this.email, {Key key}) : super(key: key);
+  PasswordView(this.email, {Key? key}) : super(key: key);
 
   @override
   _PasswordViewState createState() => new _PasswordViewState();
 }
 
 class _PasswordViewState extends State<PasswordView> {
-  TextEditingController _controllerEmail;
-  TextEditingController _controllerPassword;
+  late TextEditingController _controllerEmail;
+  late TextEditingController _controllerPassword;
 
   @override
   initState() {
@@ -106,7 +106,7 @@ class _PasswordViewState extends State<PasswordView> {
     try {
       authResult = await _auth.signInWithEmailAndPassword(
           email: _controllerEmail.text, password: _controllerPassword.text);
-      user = authResult.user;
+      user = authResult.user!;
       print(user);
     } catch (exception) {
       //TODO improve errors catching
@@ -114,8 +114,6 @@ class _PasswordViewState extends State<PasswordView> {
       showErrorDialog(context, msg);
     }
 
-    if (user != null) {
-      Navigator.of(context).pop(true);
-    }
+    Navigator.of(context).pop(true);
   }
 }

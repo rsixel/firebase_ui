@@ -11,7 +11,7 @@ enum ProvidersTypes { email, google, facebook, twitter, phone, apple }
 final GoogleSignIn googleSignIn = new GoogleSignIn();
 final FacebookLogin facebookLogin = new FacebookLogin();
 
-ProvidersTypes stringToProvidersType(String value) {
+ProvidersTypes? stringToProvidersType(String value) {
   if (value.toLowerCase().contains('facebook')) return ProvidersTypes.facebook;
   if (value.toLowerCase().contains('google')) return ProvidersTypes.google;
   if (value.toLowerCase().contains('password')) return ProvidersTypes.email;
@@ -27,23 +27,23 @@ class ButtonDescription extends StatelessWidget {
   final Color color;
   final String logo;
   final String name;
-  final VoidCallback onSelected;
+  final VoidCallback? onSelected;
 
   const ButtonDescription(
-      {@required this.logo,
-      @required this.label,
-      @required this.name,
+      {required this.logo,
+      required this.label,
+      required this.name,
       this.onSelected,
       this.labelColor = Colors.grey,
       this.color = Colors.white});
 
   ButtonDescription copyWith({
-    String label,
-    Color labelColor,
-    Color color,
-    String logo,
-    String name,
-    VoidCallback onSelected,
+    String? label,
+    Color? labelColor,
+    Color? color,
+    String? logo,
+    String? name,
+    VoidCallback? onSelected,
   }) {
     return new ButtonDescription(
         label: label ?? this.label,
@@ -106,7 +106,7 @@ Map<ProvidersTypes, ButtonDescription> providersDefinitions(
     };
 
 Future<Null> showErrorDialog(BuildContext context, String message,
-    {String title}) {
+    {String? title}) {
   return showDialog<Null>(
     context: context,
     barrierDismissible: false, // user must tap button!
@@ -115,7 +115,7 @@ Future<Null> showErrorDialog(BuildContext context, String message,
       content: new SingleChildScrollView(
         child: new ListBody(
           children: <Widget>[
-            new Text(message ?? FFULocalizations.of(context).errorOccurred),
+            new Text(message),
           ],
         ),
       ),
@@ -136,7 +136,7 @@ Future<Null> showErrorDialog(BuildContext context, String message,
 }
 
 Future<void> signOutProviders() async {
-  var currentUser =  FirebaseAuth.instance.currentUser;
+  var currentUser = FirebaseAuth.instance.currentUser;
   if (currentUser != null) {
     await signOut(currentUser.providerData);
   }

@@ -9,17 +9,17 @@ class SignUpView extends StatefulWidget {
   final String email;
   final bool passwordCheck;
 
-  SignUpView(this.email, this.passwordCheck, {Key key}) : super(key: key);
+  SignUpView(this.email, this.passwordCheck, {Key? key}) : super(key: key);
 
   @override
   _SignUpViewState createState() => new _SignUpViewState();
 }
 
 class _SignUpViewState extends State<SignUpView> {
-  TextEditingController _controllerEmail;
-  TextEditingController _controllerDisplayName;
-  TextEditingController _controllerPassword;
-  TextEditingController _controllerCheckPassword;
+  late TextEditingController _controllerEmail;
+  late TextEditingController _controllerDisplayName;
+  late TextEditingController _controllerPassword;
+  late TextEditingController _controllerCheckPassword;
 
   final FocusNode _focusPassword = FocusNode();
 
@@ -137,13 +137,13 @@ class _SignUpViewState extends State<SignUpView> {
         email: _controllerEmail.text,
         password: _controllerPassword.text,
       );
-      User user = authResult.user;
+      User user = authResult.user!;
       try {
         var displayName = _controllerDisplayName.text;
         await user.updateProfile(displayName: displayName);
         Navigator.pop(context, true);
       } catch (e) {
-        showErrorDialog(context, e.details);
+        showErrorDialog(context, e.toString());
       }
     } on PlatformException catch (e) {
       print(e.details);
