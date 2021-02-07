@@ -18,7 +18,9 @@ dependencies:
   firebase_auth: ^0.21.0-1.1.nullsafety.1 
 
   google_sign_in: ^5.0.0-nullsafety
-  flutter_facebook_login: ^3.0.0
+  flutter_facebook_login: 
+    git:
+      url: https://github.com/rsixel/flutter_facebook_login.git
 
   apple_sign_in: 
     git:
