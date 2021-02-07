@@ -17,7 +17,7 @@ class SignInScreen extends StatefulWidget {
       this.color = Colors.white,
       this.twitterConsumerKey,
       this.twitterConsumerSecret,
-      this.appleSignInAvailable,
+      required this.appleSignInAvailable,
       required this.showBar,
       required this.avoidBottomInset,
       required this.bottomPadding,
@@ -36,7 +36,7 @@ class SignInScreen extends StatefulWidget {
   final bool avoidBottomInset;
   final double horizontalPadding;
   final double bottomPadding;
-  final bool? appleSignInAvailable;
+  bool appleSignInAvailable = false;
 
   @override
   _SignInScreenState createState() => new _SignInScreenState();
@@ -79,7 +79,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             twitterConsumerSecret:
                                 widget.twitterConsumerSecret!,
                             bottomPadding: widget.bottomPadding,
-                            appleSignIn: widget.appleSignInAvailable!)),
+                            appleSignIn: widget.appleSignInAvailable)),
                   ),
                   _footer
                 ],
