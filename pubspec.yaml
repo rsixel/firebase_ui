@@ -15,7 +15,12 @@ dependencies:
     git:
       url: https://github.com/rsixel/flutter_twitter_login.git
 
-  firebase_auth: ^0.21.0-1.1.nullsafety.1 
+  # firebase_auth: ^0.21.0-1.1.nullsafety.1 
+  firebase_auth: #
+    git:
+      url: https://github.com/rsixel/flutterfire.git
+      path: packages/firebase_auth/firebase_auth
+
 
   google_sign_in: ^5.0.0-nullsafety
   flutter_facebook_login: 
