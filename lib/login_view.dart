@@ -73,7 +73,7 @@ class _LoginViewState extends State<LoginView> {
     if (result.accessToken != null) {
       try {
         AuthCredential credential =
-            FacebookAuthProvider.credential(result.accessToken.token);
+            FacebookAuthProvider.credential(result.accessToken.token!);
         UserCredential authResult =
             await _auth.signInWithCredential(credential);
         User user = authResult.user!;
