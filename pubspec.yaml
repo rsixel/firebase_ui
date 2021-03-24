@@ -5,7 +5,7 @@ author: Nicholas Bowler <crucifixx25@gmail.com>
 homepage: https://github.com/Maliffic/firebase_ui
 
 environment:
-  sdk: ">=2.12.0-259.8.beta <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -15,9 +15,9 @@ dependencies:
     git:
       url: https://github.com/rsixel/flutter_twitter_login.git
 
-  firebase_auth: ^0.21.0-1.1.nullsafety.1 
+  firebase_auth: ^1.0.1
 
-  google_sign_in: ^5.0.0-nullsafety
+  google_sign_in: ^5.0.1
   flutter_facebook_login: 
     git:
       url: https://github.com/rsixel/flutter_facebook_login.git
