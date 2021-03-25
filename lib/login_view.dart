@@ -38,10 +38,10 @@ class _LoginViewState extends State<LoginView> {
   Map<ProvidersTypes, dynamic>? _buttons;
 
   _handleEmailSignIn() async {
-    String value = (await Navigator.of(context)
+    String? value = (await Navigator.of(context)
         .push(new MaterialPageRoute<String>(builder: (BuildContext context) {
       return new EmailView(widget.passwordCheck!);
-    })))!;
+    })));
 
     if (value != null) {
       _followProvider(value);
@@ -49,7 +49,7 @@ class _LoginViewState extends State<LoginView> {
   }
 
   _handleGoogleSignIn() async {
-    GoogleSignInAccount googleUser = (await googleSignIn.signIn())!;
+    GoogleSignInAccount? googleUser = (await googleSignIn.signIn());
     if (googleUser != null) {
       GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       if (googleAuth.accessToken != null) {
